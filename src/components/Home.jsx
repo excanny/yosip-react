@@ -1,599 +1,476 @@
-import React, { useState, useEffect } from "react";
-import { Milk, Percent, ShieldCheck, Star, X, Search } from "lucide-react";
+import { useState, useEffect } from 'react';
 
-export default function Home() {
+const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [cart, setCart] = useState([]);
+  const [addedProducts, setAddedProducts] = useState(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
+
   const slides = [
-    {
-      title: "Fresh. Creamy. Happy.",
-      subtitle: "Premium cultured yogurts made from locally sourced milk.",
-      image:
-        "https://images.unsplash.com/photo-1505576399279-565b52d4ac71?q=80&w=1600&auto=format&fit=crop",
-    },
-    {
-      title: "Naturally Delicious.",
-      subtitle: "Wholesome yogurts with no artificial additives.",
-      image:
-        "https://cdn.pixabay.com/photo/2016/06/07/17/15/yogurt-1442034_1280.jpg",
-    },
     {
       title: "Healthy Indulgence.",
       subtitle: "Nutritious, creamy, and simply irresistible.",
-      image:
-        "https://cdn.pixabay.com/photo/2020/03/22/10/36/berry-4956645_1280.png",
+      description: "Experience the perfect blend of health and taste with our premium yogurt collection.",
+      buttonText: "Best Sellers",
+      buttonSecondary: "Next",
+      buttonColor: "bg-slate-900 hover:bg-slate-800",
+      buttonSecondaryColor: "bg-white text-slate-900 hover:bg-gray-100",
+      bgColor: "bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600",
+      image: "https://images.unsplash.com/photo-1571212515416-fef01fc43637?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eW9ndXJ0fGVufDB8fDB8fHww",
+      splashElements: true
     },
+    {
+      title: "Fresh Fruit Paradise",
+      subtitle: "Real fruit pieces in every spoonful",
+      description: "Taste the difference that fresh, premium ingredients make in our artisanal yogurt.",
+      buttonText: "Explore Flavors",
+      buttonSecondary: "Learn More",
+      buttonColor: "bg-pink-600 hover:bg-pink-700",
+      buttonSecondaryColor: "bg-white text-pink-900 hover:bg-pink-50",
+      bgColor: "bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600",
+      image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500&h=500&fit=crop&crop=center",
+      splashElements: false
+    },
+    {
+      title: "100% Pure Organic",
+      subtitle: "From farm to your table with love",
+      description: "Certified organic ingredients sourced from trusted local farms for the purest taste.",
+      buttonText: "Go Organic",
+      buttonSecondary: "Our Story",
+      buttonColor: "bg-green-600 hover:bg-green-700",
+      buttonSecondaryColor: "bg-white text-green-900 hover:bg-green-50",
+      bgColor: "bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500",
+      image: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500&h=500&fit=crop&crop=center",
+      splashElements: false
+    }
   ];
 
   const products = [
     {
       id: 1,
-      name: "Creamy Vanilla Greek Yogurt",
-      price: 2200,
-      size: "250ml • 3.5% fat • Vanilla",
-      tags: ["Greek", "Probiotic"],
-      rating: 4.8,
-      image: "https://cdn.pixabay.com/photo/2020/03/22/12/33/blackberry-4956988_1280.png",
+      name: "Blueberry Bliss",
+      description: "Creamy Greek yogurt with fresh blueberries and a hint of honey",
+      price: "$4.99",
+      image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&h=300&fit=crop&crop=center"
     },
     {
       id: 2,
-      name: "Strawberry Swirl Yogurt",
-      price: 2000,
-      size: "250ml • 1.5% fat • Strawberry",
-      tags: ["Low Fat", "Real Fruit"],
-      rating: 4.6,
-      image: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800",
+      name: "Strawberry Dream",
+      description: "Fresh strawberry chunks in our signature creamy yogurt",
+      price: "$4.79",
+      image: "https://images.unsplash.com/photo-1546173159-315724a31696?w=400&h=300&fit=crop&crop=center"
     },
     {
       id: 3,
-      name: "Blueberry Burst Yogurt",
-      price: 2100,
-      size: "250ml • 3.5% fat • Blueberry",
-      tags: ["Antioxidants"],
-      rating: 4.7,
-      image: "https://cdn.pixabay.com/photo/2016/03/04/02/22/yogurt-1235353_1280.jpg",
+      name: "Classic Greek",
+      description: "Traditional Greek yogurt, thick and creamy with authentic taste",
+      price: "$5.49",
+      image: "https://plus.unsplash.com/premium_photo-1683141128118-fe2d959dbd09?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8eW9ndXJ0fGVufDB8fDB8fHww"
     },
     {
       id: 4,
-      name: "Mango Lassi Yogurt Drink",
-      price: 2400,
-      size: "500ml • 10% fat • Mango",
-      tags: ["Rich", "Limited"],
-      rating: 4.9,
-      image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800",
-    },
-  ];
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Amaka O.",
-      title: "Fitness Coach",
-      message:
-        "YoSip yogurt has become part of my daily routine. It’s healthy, creamy, and my clients love it too!",
-      tags: ["Health", "Lifestyle"],
-      rating: 5,
-      image: "https://randomuser.me/api/portraits/women/68.jpg",
+      name: "Vanilla Bean",
+      description: "Rich vanilla bean flavor with smooth, creamy texture",
+      price: "$4.59",
+      image: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&h=300&fit=crop&crop=center"
     },
     {
-      id: 2,
-      name: "David A.",
-      title: "Entrepreneur",
-      message:
-        "The Mango Lassi Yogurt Drink is a game changer! Tastes just like homemade, but better.",
-      tags: ["Business", "On-the-Go"],
-      rating: 5,
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      id: 5,
+      name: "Mixed Berry",
+      description: "A delightful blend of strawberries, blueberries, and raspberries",
+      price: "$5.29",
+      image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop&crop=center"
     },
     {
-      id: 3,
-      name: "Kemi B.",
-      title: "Nutritionist",
-      message:
-        "Finally, a yogurt brand that truly cares about quality ingredients. I recommend it to all my clients.",
-      tags: ["Wellness", "Nutrition"],
-      rating: 4,
-      image: "https://randomuser.me/api/portraits/women/12.jpg",
-    },
-    {
-      id: 4,
-      name: "Tunde E.",
-      title: "Student",
-      message:
-        "Affordable, delicious, and keeps me energized throughout the day. 10/10!",
-      tags: ["Affordable", "Youth"],
-      rating: 5,
-      image: "https://randomuser.me/api/portraits/men/45.jpg",
-    },
-  ];
-
-const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTestimonial(
-        (prev) => (prev + 1) % testimonials.length
-      );
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [testimonials.length]);
-
-
-  const [current, setCurrent] = useState(0);
-  const [cart, setCart] = useState([]);
-  const [cartOpen, setCartOpen] = useState(false);
-
-  // Load cart from localStorage
-  useEffect(() => {
-    const savedCart = localStorage.getItem("YoSip_cart");
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      id: 6,
+      name: "Honey Vanilla",
+      description: "Classic vanilla with pure wildflower honey",
+      price: "$4.89",
+      image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=300&fit=crop&crop=center"
     }
-  }, []);
+  ];
 
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("YoSip_cart", JSON.stringify(cart));
-  }, [cart]);
+  const highlights = [
+    {
+      icon: (
+        <svg className="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+      ),
+      title: "Farm-fresh milk",
+      description: "Made with the best locally sourced milk."
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      ),
+      title: "No added nonsense",
+      description: "Pure goodness. No artificial additives."
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+        </svg>
+      ),
+      title: "Quality assured",
+      description: "Trusted quality you can rely on."
+    }
+  ];
 
-  // Auto-slide
+  // Auto-advance slider
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 4000);
-    return () => clearInterval(timer);
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
   }, [slides.length]);
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
-  const goToSlide = (index) => setCurrent(index);
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
 
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
-  // ✅ Auto-rotate testimonials
-  useEffect(() => {
-    if (testimonials.length === 0) return;
-    const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [testimonials]);
-
-  // Add to cart
   const addToCart = (product) => {
-    setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item
-        );
-      }
-      return [...prev, { ...product, qty: 1 }];
-    });
+    setCart([...cart, product]);
+    setAddedProducts(new Set([...addedProducts, product.id]));
+    
+    // Remove "Added!" state after 2 seconds
+    setTimeout(() => {
+      setAddedProducts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(product.id);
+        return newSet;
+      });
+    }, 2000);
   };
 
-  // Remove from cart
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  // Update qty
-  const updateQty = (id, qty) => {
-    if (qty < 1) return;
-    setCart((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, qty } : item))
-    );
-  };
-
-  // Clear cart
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("YoSip_cart");
-  };
-
-  // Checkout
-  const checkout = () => {
-    if (cart.length === 0) {
-      alert("Your cart is empty!");
-      return;
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    alert(
-      `✅ Checkout successful!\n\nItems: ${cart.length}\nTotal: $${cartTotal.toLocaleString()}`
-    );
-    clearCart();
-    setCartOpen(false);
   };
-
-  // Cart count & total
-  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
-  const cartTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   return (
-    <div className="bg-white font-sans px-2">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-50 bg-white shadow-sm">
-        {/* Top Banner */}
-        <div className="bg-pink-50 text-sm text-gray-700 flex items-center justify-center gap-3 py-1 border-b">
-          <span className="bg-black text-white text-xs font-semibold px-2 py-1 rounded-full">
-            New
-          </span>
-          <span>Free delivery over $1000</span>
-          <span className="ml-auto flex items-center gap-6 pr-6">
-            <span className="flex items-center gap-1">🚚 Same-day delivery</span>
-            <span className="flex items-center gap-1">🔒 Secure checkout</span>
-          </span>
-        </div>
-
-        {/* Navbar */}
-        <div className="flex items-center justify-between px-6 py-2 border-b bg-white">
-          <div className="flex items-center gap-2">
-            <img src="assets/yosip.png" alt="YoSip Logo" className="w-16 h-16" />
-          </div>
-
-          <div className="px-8 w-1/2">
-  {/* <div className="relative flex items-center">
-    <input
-      type="text"
-      placeholder="Search yogurt, flavors, packs..."
-      className="w-full border rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-1 focus:ring-gray-400"
-    />
-    <button className="absolute right-2 bg-gray-900 text-white p-2 rounded-md">
-      <Search className="w-5 h-5" />
-    </button>
-  </div> */}
-  <div className="relative">
-    <input
-      type="text"
-      placeholder="Search yogurt, flavors, packs..."
-      className="w-full border rounded-lg pl-4 pr-12 py-2 focus:outline-none focus:ring-1 focus:ring-gray-400"
-    />
-    <button
-      type="submit"
-      className="absolute inset-y-0 right-2 flex items-center justify-center px-3 text-gray-600 hover:text-gray-900"
-    >
-      <Search className="w-5 h-5" />
-    </button>
-  </div>
-</div>
-
-          <div className="flex items-center gap-3">
-          
-            <button
-              onClick={() => setCartOpen(true)}
-              className="flex items-center gap-2 bg-gray-900 text-white rounded-full px-4 py-2"
-            >
-              🛒 Cart{" "}
-              <span className="bg-white text-black rounded-full px-2">
-                {cartCount}
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Slider */}
-      <div className="mx-6 my-4 rounded-3xl relative overflow-hidden">
-        <img
-          src={slides[current].image}
-          alt={slides[current].title}
-          className="w-full h-[320px] object-cover rounded-3xl"
-        />
-
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center p-10 text-white">
-          <h1 className="text-5xl font-bold">{slides[current].title}</h1>
-          <p className="mt-2 text-lg">{slides[current].subtitle}</p>
-          <div className="flex gap-4 mt-6">
-            <button className="bg-gray-900 text-white px-6 py-3 rounded-2xl">
-              Shop Best Sellers
-            </button>
-            <button
-              onClick={nextSlide}
-              className="bg-white text-gray-900 px-6 py-3 rounded-2xl"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-
-        {/* Slider dots */}
-        <div className="absolute bottom-4 right-6 flex gap-2">
-          {slides.map((_, index) => (
-            <span
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`cursor-pointer ${
-                index === current ? "w-6 h-2 bg-white" : "w-2 h-2 bg-gray-400"
-              } rounded-full transition-all`}
-            ></span>
-          ))}
-        </div>
-      </div>
-
-      {/* Features */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 pb-6">
-        <div className="rounded-2xl border border-gray-400 bg-white px-5 py-5">
-          <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
-            <Milk className="w-11 h-11 text-gray-700" />
-            <div>
-              <h3 className="font-bold">Farm-fresh milk</h3>
-              <p className="text-gray-400">
-                Made with the best locally sourced milk.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-gray-400 bg-white px-5 py-5">
-          <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
-            <Percent className="w-11 h-11 text-gray-700" />
-            <div>
-              <h3 className="font-bold">No added nonsense</h3>
-              <p className="text-gray-400 mt-1">
-                Pure goodness. No artificial additives.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-gray-400 bg-white px-5 py-5">
-          <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
-            <ShieldCheck className="w-11 h-11 text-gray-700" />
-            <div>
-              <h3 className="font-bold">Quality assured</h3>
-              <p className="text-gray-400 mt-1">
-                Trusted quality you can rely on.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Shop Yogurt */}
-      <div className="px-6 pb-12">
-        <h2 className="text-3xl font-bold">Shop Yogurt</h2>
-        <p className="text-gray-500 mb-6">Hand-crafted cultured goodness.</p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((p) => (
-            <div
-              key={p.id}
-              className="border rounded-2xl bg-white shadow hover:shadow-lg transition overflow-hidden"
-            >
-              <div className="relative">
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="h-48 w-full object-cover"
-                />
-                <div className="absolute top-2 left-2 flex gap-2 flex-wrap">
-                  {p.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="bg-white text-gray-700 text-xs px-2 py-1 rounded-full shadow"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+    <div className="bg-gray-50">
+      {/* Navigation */}
+      <nav className="bg-white shadow-lg fixed w-full z-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  {/* Replace circle with logo image */}
+                  <img
+                    src="assets/yosip.png"
+                    alt="Yosip Logo"
+                    className="w-14 h-14"
+                  />
                 </div>
               </div>
 
-              <div className="p-4">
-                <h3 className="font-semibold">{p.name}</h3>
-                <p className="text-gray-900 font-medium mt-1">
-                  ${p.price.toLocaleString()}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">{p.size}</p>
-
-                <div className="flex items-center gap-1 mt-2">
-                  <Star className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm text-gray-700">{p.rating}</span>
-                </div>
-
-                <button
-                  onClick={() => addToCart(p)}
-                  className="mt-4 w-full bg-gray-900 text-white py-2 rounded-full"
-                >
-                  Add to cart
+            {/* Search Bar */}
+            <div className="hidden md:flex flex-1 max-w-md mx-8">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search yogurt, flavors, packs..."
+                  className="w-full pl-4 pr-12 py-3 bg-gray-100 rounded-full text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+                />
+                <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
                 </button>
               </div>
             </div>
-          ))}
+
+            <div className="flex items-center space-x-4">
+              <button className="relative bg-slate-900 text-white px-6 py-3 rounded-full hover:bg-slate-800 transition-colors flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6h9"></path>
+                </svg>
+                <span className="font-medium">Cart</span>
+                <span className="bg-white text-slate-900 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                  {cart.length}
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </nav>
 
-      {/* ✅ Testimonials Carousel */}
-      {testimonials.length > 0 && (
-        <div className="px-6 py-12 bg-pink-50">
-          <h2 className="text-3xl font-bold text-center">What Our Customers Say</h2>
-          <p className="text-gray-500 text-center mb-10">
-            Loved by yogurt enthusiasts everywhere.
-          </p>
+      {/* Hero Slider Section */}
+      <section id="home" className="pt-16">
+        <div className="relative overflow-hidden">
+          <div 
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {slides.map((slide, index) => (
+              <div key={index} className={`min-w-full h-[500px] ${slide.bgColor} flex items-center relative overflow-hidden`}>
+                {/* Animated Splash Elements for first slide */}
+                {slide.splashElements && (
+                  <>
+                    <div className="absolute top-20 left-1/4 w-8 h-8 bg-white bg-opacity-40 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                    <div className="absolute top-32 right-1/3 w-6 h-6 bg-white bg-opacity-30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
+                    <div className="absolute bottom-32 left-1/3 w-10 h-10 bg-white bg-opacity-35 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+                    <div className="absolute top-40 right-1/4 w-4 h-4 bg-white bg-opacity-25 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
+                    <div className="absolute bottom-40 right-1/2 w-12 h-12 bg-white bg-opacity-20 rounded-full animate-bounce" style={{ animationDelay: '2s' }}></div>
+                    
+                    {/* Large splash elements */}
+                    <div className="absolute top-1/4 right-20 w-32 h-20 bg-white bg-opacity-20 rounded-full transform rotate-45"></div>
+                    <div className="absolute bottom-20 left-10 w-40 h-24 bg-white bg-opacity-15 rounded-full transform -rotate-12"></div>
+                    <div className="absolute top-10 left-1/2 w-28 h-16 bg-white bg-opacity-25 rounded-full transform rotate-12"></div>
+                    
+                    {/* Cherry element */}
+                    <div className="absolute top-16 right-32 w-16 h-16 bg-red-500 rounded-full opacity-80"></div>
+                    <div className="absolute top-12 right-28 w-4 h-8 bg-green-600 rounded-full transform rotate-45"></div>
+                  </>
+                )}
 
-          <div className="relative max-w-3xl mx-auto">
-            <div className="overflow-hidden rounded-2xl shadow-lg">
-              <div
-                className="flex transition-transform duration-500"
-                style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
-              >
-                {testimonials.map((t, i) => (
-                  <div
-                    key={i}
-                    className="w-full flex-shrink-0 bg-white p-8 flex flex-col items-center text-center"
-                  >
-                    <p className="text-gray-600 italic max-w-md">“{t.quote}”</p>
-                    <div className="flex items-center gap-3 mt-6">
-                      <img
-                        src={t.image}
-                        alt={t.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <div>
-                        <h4 className="font-semibold">{t.name}</h4>
-                        <p className="text-sm text-gray-500">{t.location}</p>
+                <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
+                  <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="space-y-6">
+                      <h1 className="text-6xl lg:text-7xl font-bold text-white leading-tight">
+                        {slide.title}
+                      </h1>
+                      <p className="text-2xl text-white opacity-90 max-w-lg">
+                        {slide.subtitle}
+                      </p>
+                      <p className="text-lg text-white opacity-80 max-w-lg">
+                        {slide.description}
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <button className={`${slide.buttonColor} text-white px-8 py-4 rounded-full font-semibold text-lg transition-colors`}>
+                          {slide.buttonText}
+                        </button>
+                        <button className={`${slide.buttonSecondaryColor} border-2 border-white px-8 py-4 rounded-full font-semibold text-lg transition-colors`}>
+                          {slide.buttonSecondary}
+                        </button>
                       </div>
                     </div>
+                    <div className="relative">
+                      <img 
+                        src={slide.image} 
+                        alt={slide.title} 
+                        className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                      />
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* Navigation Dots */}
-            <div className="flex justify-center gap-2 mt-4">
-              {testimonials.map((_, i) => (
-                <span
-                  key={i}
-                  onClick={() => setCurrentTestimonial(i)}
-                  className={`cursor-pointer ${
-                    i === currentTestimonial ? "w-6 h-2 bg-gray-800" : "w-2 h-2 bg-gray-400"
-                  } rounded-full transition-all`}
-                ></span>
+          {/* Slider Indicators */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`h-3 rounded-full transition-all ${
+                  index === currentSlide 
+                    ? 'bg-white w-8' 
+                    : 'bg-white bg-opacity-50 w-3 hover:bg-opacity-75'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+        
+        {/* Highlights Section */}
+        <div className="bg-white py-8 px-4 ">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8">
+              {highlights.map((highlight, index) => (
+                <div key={index} className="flex items-start space-x-4 p-6 bg-gray-50 rounded-2xl border border-gray-300">
+                  <div className="flex-shrink-0">
+                    {highlight.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">{highlight.title}</h3>
+                    <p className="text-gray-600 text-sm">{highlight.description}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* Cart Drawer */}
-      {cartOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-end z-50">
-          <div className="bg-white w-80 h-full shadow-lg p-4 flex flex-col">
-            <div className="flex justify-between items-center border-b pb-2">
-              <h3 className="text-lg font-bold">Your Cart</h3>
-              <button onClick={() => setCartOpen(false)}>
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto mt-4">
-              {cart.length === 0 ? (
-                <p className="text-gray-500">Your cart is empty</p>
-              ) : (
-                cart.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between mb-4"
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 rounded object-cover"
-                    />
-                    <div className="flex-1 px-2">
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-gray-500">
-                        ${item.price.toLocaleString()}
-                      </p>
-
-                      <div className="flex items-center gap-2 mt-1">
-                        <button
-                          onClick={() => updateQty(item.id, item.qty - 1)}
-                          className="px-2 bg-gray-200 rounded"
-                        >
-                          -
-                        </button>
-                        <span>{item.qty}</span>
-                        <button
-                          onClick={() => updateQty(item.id, item.qty + 1)}
-                          className="px-2 bg-gray-200 rounded"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-500"
+      {/* Products Section */}
+      <section id="products" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Our Premium Collection</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">From classic Greek to exotic flavors, discover yogurt perfection in every spoonful</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map((product) => (
+              <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:transform hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+                <div className="h-64 overflow-hidden">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-4">{product.description}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-2xl font-bold text-blue-600">{product.price}</span>
+                    <button 
+                      onClick={() => addToCart(product)}
+                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                        addedProducts.has(product.id)
+                          ? 'bg-green-500 hover:bg-green-600 text-white'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}
                     >
-                      ✕
+                      {addedProducts.has(product.id) ? 'Added!' : 'Add to Cart'}
                     </button>
                   </div>
-                ))
-              )}
-            </div>
-
-            <div className="border-t pt-2 space-y-2">
-              <p className="font-bold">
-                Total: ${cartTotal.toLocaleString()}
-              </p>
-              <button
-                onClick={checkout}
-                className="w-full bg-green-600 text-white py-2 rounded-lg"
-              >
-                ✅ Checkout
-              </button>
-              <button
-                onClick={clearCart}
-                className="w-full bg-red-500 text-white py-2 rounded-lg"
-              >
-                🗑️ Clear Cart
-              </button>
-            </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      )}
+      </section>
 
-      {/* ✅ Call-to-Action Banner */}
-      <div className="bg-pink-600 text-white text-center py-12">
-        <h2 className="text-3xl font-bold mb-4">Ready to Experience Pure Delight?</h2>
-        <p className="mb-6">Join thousands of happy customers and indulge in quality yogurt.</p>
-        <div className="flex justify-center gap-4">
-          <button className="bg-white text-pink-600 px-6 py-3 rounded-lg font-semibold">
-            Shop Now
-          </button>
-          <button className="bg-pink-800 text-white px-6 py-3 rounded-lg font-semibold">
-            Explore More
-          </button>
-        </div>
-      </div>
-
-      {/* ✅ Footer */}
-      <footer className="bg-gray-900 text-gray-300 px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      {/* Features Section */}
+      <section id="about" className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Why Choose Yosip?</h2>
+            <p className="text-xl text-gray-600">We're committed to delivering the highest quality yogurt experience</p>
+          </div>
           
-          {/* Brand + Social */}
-          <div>
-            <img src="assets/yosip.png" alt="YoSip Logo" className="w-16 mb-4" />
-            <p className="text-sm mb-4">
-              Bringing you fresh, creamy, and wholesome yogurts crafted with love. 
-            </p>
-            <div className="flex gap-3">
-              <a href="#" className="hover:text-white">🌐</a>
-              <a href="#" className="hover:text-white">📘</a>
-              <a href="#" className="hover:text-white">📸</a>
-              <a href="#" className="hover:text-white">🐦</a>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">100% Natural</h3>
+              <p className="text-gray-600">No artificial preservatives, colors, or flavors. Just pure, natural goodness in every cup.</p>
             </div>
-          </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-white">Shop</a></li>
-              <li><a href="#" className="hover:text-white">About Us</a></li>
-              <li><a href="#" className="hover:text-white">Contact</a></li>
-              <li><a href="#" className="hover:text-white">FAQs</a></li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Stay Updated</h4>
-            <p className="text-sm mb-4">Subscribe to our newsletter for the latest flavors and offers.</p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="flex-1 px-3 py-2 rounded-l-lg text-black focus:outline-none" 
-              />
-              <button className="bg-pink-600 px-4 py-2 rounded-r-lg text-white font-semibold">
-                Subscribe
-              </button>
+            <div className="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Made with Love</h3>
+              <p className="text-gray-600">Each batch is carefully crafted by our artisans who are passionate about yogurt perfection.</p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Fresh Daily</h3>
+              <p className="text-gray-600">Delivered fresh to your door every day. Experience the difference freshness makes.</p>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Bottom Bar  */}
-        <div className="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} YoSip Yogurt. All rights reserved. | Privacy Policy
+      {/* Newsletter Section */}
+      <section className="py-20 bg-emerald-600">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">Stay Fresh with Us</h2>
+          <p className="text-xl text-emerald-100 mb-8">Get exclusive offers, new flavor alerts, and healthy recipes delivered to your inbox</p>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="flex-1 px-6 py-4 rounded-full text-gray-800 focus:outline-none focus:ring-4 focus:ring-emerald-300"
+            />
+            <button className="bg-white text-emerald-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer id="contact" className="bg-gray-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+           
+        <div>
+             <div className="flex items-center space-x-2 mb-4">
+                  <img
+                    src="assets/yosip.png"
+                    alt="Yosip Logo"
+                    className="w-16 h-16 object-contain"
+                  />
+                </div>
+                <p className="text-gray-400">
+                  Premium natural yogurt crafted with love and the finest ingredients.
+                </p>
+              </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Products</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><button className="hover:text-white transition-colors text-left">Greek Yogurt</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Fruit Yogurt</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Organic Line</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Protein Yogurt</button></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Company</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><button className="hover:text-white transition-colors text-left">About Us</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Our Story</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Careers</button></li>
+                <li><button className="hover:text-white transition-colors text-left">Contact</button></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Connect</h3>
+              <div className="flex space-x-4">
+                <button className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                  <span className="text-sm">f</span>
+                </button>
+                <button className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                  <span className="text-sm">t</span>
+                </button>
+                <button className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                  <span className="text-sm">i</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">© 2025 Yosip. All rights reserved.</p>
+            <div className="flex space-x-6 text-sm text-gray-400 mt-4 md:mt-0">
+              <button className="hover:text-white transition-colors">Privacy Policy</button>
+              <button className="hover:text-white transition-colors">Terms of Service</button>
+              <button className="hover:text-white transition-colors">Cookie Policy</button>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
   );
-}
+};
+
+export default Home;
