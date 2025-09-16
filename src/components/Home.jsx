@@ -159,100 +159,134 @@ const Home = () => {
 
   return (
     <div className="bg-gray-50">
+       
       {/* Navigation */}
-      <nav className="bg-white shadow-lg fixed w-full z-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-1">
-                  {/* Replace circle with logo image */}
-                  <img
-                    src="assets/yosip.png"
-                    alt="Yosip Logo"
-                    className="w-14 h-14"
+    <nav className="bg-white shadow-lg fixed w-full z-50">
+      {/* Top Promo Banner */}
+      <div className="bg-pink-50 text-sm text-gray-700 flex items-center justify-center gap-3 p-3 border-b">
+        <span className="bg-black text-white text-xs font-semibold px-2 py-1 rounded-full">
+          New
+        </span>
+        <span>Free delivery over $1000</span>
+        <span className="ml-auto flex items-center gap-6 pr-6">
+          <span className="flex items-center gap-1">🚚 Same-day delivery</span>
+          <span className="flex items-center gap-1">🔒 Secure checkout</span>
+        </span>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <img
+              src="assets/yosip.png"
+              alt="Yosip Logo"
+              className="w-14 h-14 object-contain"
+            />
+          </div>
+
+          {/* Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-xl mx-8">
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search yogurt, flavors, packs..."
+                className="w-full pl-4 pr-12 py-3 rounded-full border text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+              >
+                <svg
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
-                </div>
-              </div>
-
-            {/* Search Bar */}
-            <div className="hidden md:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search yogurt, flavors, packs..."
-                  className="w-full pl-4 pr-12 py-3 bg-gray-100 rounded-full text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
-                />
-                <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <button className="relative bg-slate-900 text-white px-6 py-3 rounded-full hover:bg-slate-800 transition-colors flex items-center space-x-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6h9"></path>
                 </svg>
-                <span className="font-medium">Cart</span>
-                <span className="bg-white text-slate-900 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-                  {cart.length}
-                </span>
               </button>
             </div>
           </div>
-        </div>
-      </nav>
 
-      {/* Hero Slider Section */}
-      <section id="home" className="pt-16">
-        <div className="relative overflow-hidden">
+          {/* Cart Button */}
+          <div className="flex items-center space-x-4">
+            <button
+              type="button"
+              className="relative bg-slate-900 text-white px-6 py-3 rounded-full hover:bg-slate-800 transition-colors flex items-center space-x-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4L7 13l-1.5 6h9" />
+              </svg>
+              <span className="font-medium">Cart</span>
+              <span className="bg-white text-slate-900 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                {cart.length}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+      {/* Hero Slider Section - Made Shorter with Better Padding */}
+      <section id="home" className="pt-32 px-4">
+        <div className="relative overflow-hidden rounded-2xl mx-auto max-w-7xl">
           <div 
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {slides.map((slide, index) => (
-              <div key={index} className={`min-w-full h-[500px] ${slide.bgColor} flex items-center relative overflow-hidden`}>
+              <div key={index} className={`min-w-full h-[350px] ${slide.bgColor} flex items-center relative overflow-hidden`}>
                 {/* Animated Splash Elements for first slide */}
                 {slide.splashElements && (
                   <>
-                    <div className="absolute top-20 left-1/4 w-8 h-8 bg-white bg-opacity-40 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-                    <div className="absolute top-32 right-1/3 w-6 h-6 bg-white bg-opacity-30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
-                    <div className="absolute bottom-32 left-1/3 w-10 h-10 bg-white bg-opacity-35 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-                    <div className="absolute top-40 right-1/4 w-4 h-4 bg-white bg-opacity-25 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
-                    <div className="absolute bottom-40 right-1/2 w-12 h-12 bg-white bg-opacity-20 rounded-full animate-bounce" style={{ animationDelay: '2s' }}></div>
+                    <div className="absolute top-16 left-1/4 w-6 h-6 bg-white bg-opacity-40 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                    <div className="absolute top-24 right-1/3 w-4 h-4 bg-white bg-opacity-30 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
+                    <div className="absolute bottom-20 left-1/3 w-8 h-8 bg-white bg-opacity-35 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+                    <div className="absolute top-28 right-1/4 w-3 h-3 bg-white bg-opacity-25 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
+                    <div className="absolute bottom-24 right-1/2 w-10 h-10 bg-white bg-opacity-20 rounded-full animate-bounce" style={{ animationDelay: '2s' }}></div>
                     
                     {/* Large splash elements */}
-                    <div className="absolute top-1/4 right-20 w-32 h-20 bg-white bg-opacity-20 rounded-full transform rotate-45"></div>
-                    <div className="absolute bottom-20 left-10 w-40 h-24 bg-white bg-opacity-15 rounded-full transform -rotate-12"></div>
-                    <div className="absolute top-10 left-1/2 w-28 h-16 bg-white bg-opacity-25 rounded-full transform rotate-12"></div>
+                    <div className="absolute top-1/4 right-16 w-24 h-16 bg-white bg-opacity-20 rounded-full transform rotate-45"></div>
+                    <div className="absolute bottom-16 left-8 w-32 h-20 bg-white bg-opacity-15 rounded-full transform -rotate-12"></div>
+                    <div className="absolute top-8 left-1/2 w-20 h-12 bg-white bg-opacity-25 rounded-full transform rotate-12"></div>
                     
                     {/* Cherry element */}
-                    <div className="absolute top-16 right-32 w-16 h-16 bg-red-500 rounded-full opacity-80"></div>
-                    <div className="absolute top-12 right-28 w-4 h-8 bg-green-600 rounded-full transform rotate-45"></div>
+                    <div className="absolute top-12 right-24 w-12 h-12 bg-red-500 rounded-full opacity-80"></div>
+                    <div className="absolute top-8 right-20 w-3 h-6 bg-green-600 rounded-full transform rotate-45"></div>
                   </>
                 )}
 
-                <div className="max-w-7xl mx-auto px-4 w-full relative z-10">
-                  <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-6">
-                      <h1 className="text-6xl lg:text-7xl font-bold text-white leading-tight">
+                <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
+                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div className="space-y-4">
+                      <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white leading-tight">
                         {slide.title}
                       </h1>
-                      <p className="text-2xl text-white opacity-90 max-w-lg">
+                      <p className="text-base lg:text-lg text-white opacity-90 max-w-lg">
                         {slide.subtitle}
                       </p>
-                      <p className="text-lg text-white opacity-80 max-w-lg">
+                      <p className="text-sm lg:text-base text-white opacity-80 max-w-lg">
                         {slide.description}
                       </p>
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        <button className={`${slide.buttonColor} text-white px-8 py-4 rounded-full font-semibold text-lg transition-colors`}>
+                      <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                        <button className={`${slide.buttonColor} text-white px-6 py-3 rounded-full font-semibold text-base transition-colors`}>
                           {slide.buttonText}
                         </button>
-                        <button className={`${slide.buttonSecondaryColor} border-2 border-white px-8 py-4 rounded-full font-semibold text-lg transition-colors`}>
+                        <button className={`${slide.buttonSecondaryColor} border-2 border-white px-6 py-3 rounded-full font-semibold text-base transition-colors`}>
                           {slide.buttonSecondary}
                         </button>
                       </div>
@@ -261,7 +295,7 @@ const Home = () => {
                       <img 
                         src={slide.image} 
                         alt={slide.title} 
-                        className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                        className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-2xl"
                       />
                     </div>
                   </div>
@@ -271,15 +305,15 @@ const Home = () => {
           </div>
 
           {/* Slider Indicators */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3">
             {slides.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`h-3 rounded-full transition-all ${
+                className={`h-2.5 rounded-full transition-all ${
                   index === currentSlide 
-                    ? 'bg-white w-8' 
-                    : 'bg-white bg-opacity-50 w-3 hover:bg-opacity-75'
+                    ? 'bg-white w-7' 
+                    : 'bg-white bg-opacity-50 w-2.5 hover:bg-opacity-75'
                 }`}
               />
             ))}
@@ -287,27 +321,25 @@ const Home = () => {
         </div>
         
         {/* Highlights Section */}
-        <div className="bg-white py-8 px-4 ">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              {highlights.map((highlight, index) => (
-                <div key={index} className="flex items-start space-x-4 p-6 bg-gray-50 rounded-2xl border border-gray-300">
-                  <div className="flex-shrink-0">
-                    {highlight.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{highlight.title}</h3>
-                    <p className="text-gray-600 text-sm">{highlight.description}</p>
-                  </div>
+        <div className="bg-white py-3 px-4 rounded-2xl max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6">
+            {highlights.map((highlight, index) => (
+              <div key={index} className="flex items-start space-x-4 p-6 bg-gray-50 rounded-2xl border border-gray-300">
+                <div className="flex-shrink-0">
+                  {highlight.icon}
                 </div>
-              ))}
-            </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">{highlight.title}</h3>
+                  <p className="text-gray-600 text-sm">{highlight.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Products Section */}
-      <section id="products" className="py-20 bg-white">
+      <section id="products" className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Our Premium Collection</h2>
@@ -348,7 +380,7 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section id="about" className="py-20 bg-gray-100">
+      <section id="about" className="py-10 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Why Choose Yosip?</h2>
@@ -388,7 +420,7 @@ const Home = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 bg-emerald-600">
+      <section className="py-10 bg-emerald-600">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">Stay Fresh with Us</h2>
           <p className="text-xl text-emerald-100 mb-8">Get exclusive offers, new flavor alerts, and healthy recipes delivered to your inbox</p>

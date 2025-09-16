@@ -5,12 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
-      <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              montserrat: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      }
+    </script>
   </head>
-  <body>
+  <body class="font-montserrat">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-	 <script src="scripts/es6-shim.js"></script>
+    <script src="scripts/es6-shim.js"></script>
     <script src="scripts/websdk.client.bundle.min.js"></script>
     <script src="scripts/fingerprint.sdk.min.js"></script>
   </body>
