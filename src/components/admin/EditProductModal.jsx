@@ -173,12 +173,17 @@ const EditProductModal = ({ product, onClose, onSave, showToast }) => {
                 disabled={isSubmitting}
               >
                 <option value="">Select category</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Clothing">Clothing</option>
-                <option value="Accessories">Accessories</option>
-                <option value="Home & Living">Home & Living</option>
-                <option value="Sports">Sports</option>
-                <option value="Books">Books</option>
+                 <option value="Snacks">Snacks</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Bakery">Bakery & Pastries</option>
+                <option value="Confectionery">Confectionery (Sweets & Chocolates)</option>
+                <option value="Fast Food">Fast Food</option>
+                <option value="Packaged Food">Packaged Food</option>
+                <option value="Dairy">Dairy Products</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Healthy Snacks">Healthy Snacks</option>
+                <option value="Spices">Spices & Seasonings</option>
+                <option value="Frozen Food">Frozen Food</option>
                 <option value="Other">Other</option>
               </select>
             </div>
