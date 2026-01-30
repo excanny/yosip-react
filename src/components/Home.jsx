@@ -668,7 +668,7 @@ export default function Home() {
 
       {/* Shop Yogurt */}
       <div className="px-6 pb-12">
-        <h2 className="text-3xl font-bold">Shop Yogurt</h2>
+        <h2 className="text-3xl font-bold">Shop Yosip Goodies</h2>
         <p className="text-gray-500 mb-6">Hand-crafted cultured goodness.</p>
 
         {loading ? (
