@@ -703,23 +703,26 @@ export default function Home() {
               return (
                 <div
                   key={p.id}
-                  className="border rounded-2xl bg-white shadow hover:shadow-lg transition overflow-hidden"
+                  className="border rounded-2xl bg-white shadow-md hover:shadow-2xl transition-all duration-500 ease-out overflow-hidden hover:scale-[1.03] hover:-translate-y-2 group cursor-pointer"
                 >
-                  <div className="relative">
+                  <div className="relative overflow-hidden">
                     <img
                       src={p.image}
                       alt={p.name}
-                      className="h-48 w-full object-cover"
+                      className="h-48 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-hover:rotate-1"
                       onError={(e) => {
                         e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
                       }}
                     />
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
                     {p.tags && p.tags.length > 0 && (
                       <div className="absolute top-2 left-2 flex gap-2 flex-wrap">
                         {p.tags.map((tag, i) => (
                           <span
                             key={i}
-                            className="bg-white text-gray-700 text-xs px-2 py-1 rounded-full shadow"
+                            className="bg-white text-gray-700 text-xs px-2 py-1 rounded-full shadow transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
                           >
                             {tag}
                           </span>
@@ -728,7 +731,7 @@ export default function Home() {
                     )}
                     {p.stock < 5 && p.stock > 0 && (
                       <div className="absolute top-2 right-2">
-                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow">
+                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow animate-pulse">
                           Only {p.stock} left!
                         </span>
                       </div>
@@ -736,8 +739,8 @@ export default function Home() {
                   </div>
 
                   <div className="p-4">
-                    <h3 className="font-semibold">{p.name}</h3>
-                    <p className="text-gray-900 font-medium mt-1">
+                    <h3 className="font-semibold group-hover:text-pink-600 transition-colors duration-300">{p.name}</h3>
+                    <p className="text-gray-900 font-medium mt-1 group-hover:text-pink-700 transition-colors duration-300">
                       ${p.price.toFixed(2)}
                     </p>
                     {p.description && (
@@ -749,7 +752,7 @@ export default function Home() {
 
                     {p.rating && (
                       <div className="flex items-center gap-1 mt-2">
-                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500 transition-transform duration-300 group-hover:scale-125" />
                         <span className="text-sm text-gray-700">{p.rating.toFixed(1)}</span>
                       </div>
                     )}
@@ -758,19 +761,19 @@ export default function Home() {
                       <button
                         onClick={() => addToCart(p)}
                         disabled={p.stock === 0}
-                        className={`mt-4 w-full py-2 rounded-full transition ${
+                        className={`mt-4 w-full py-2 rounded-full transition-all duration-300 transform ${
                           p.stock === 0 
                             ? "bg-gray-300 text-gray-500 cursor-not-allowed" 
-                            : "bg-gray-900 text-white hover:bg-gray-800"
+                            : "bg-gray-900 text-white hover:bg-pink-600 hover:scale-105 active:scale-95 hover:shadow-lg"
                         }`}
                       >
                         {p.stock === 0 ? "Out of Stock" : "Add to cart"}
                       </button>
                     ) : (
-                      <div className="mt-4 flex items-center justify-between bg-gray-100 rounded-full px-2 py-2">
+                      <div className="mt-4 flex items-center justify-between bg-gray-100 rounded-full px-2 py-2 group-hover:bg-pink-50 transition-colors duration-300">
                         <button
                           onClick={() => updateQty(p.id, cartQty - 1)}
-                          className="bg-white rounded-full p-1.5 hover:bg-gray-200 transition"
+                          className="bg-white rounded-full p-1.5 hover:bg-pink-100 transition-all duration-200 hover:scale-110 active:scale-95"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
@@ -778,10 +781,10 @@ export default function Home() {
                         <button
                           onClick={() => updateQty(p.id, cartQty + 1)}
                           disabled={cartQty >= p.stock}
-                          className={`rounded-full p-1.5 transition ${
+                          className={`rounded-full p-1.5 transition-all duration-200 ${
                             cartQty >= p.stock 
                               ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
-                              : "bg-white hover:bg-gray-200"
+                              : "bg-white hover:bg-pink-100 hover:scale-110 active:scale-95"
                           }`}
                         >
                           <Plus className="w-4 h-4" />
