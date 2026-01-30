@@ -598,42 +598,22 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Hero Slider */}
-      <div className="mx-6 my-4 rounded-3xl relative overflow-hidden">
-        <img
-          src={slides[current].image}
-          alt={slides[current].title}
-          className="w-full h-[320px] object-cover rounded-3xl"
-        />
-
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center p-10 text-white">
-          <h1 className="text-5xl font-bold">{slides[current].title}</h1>
-          <p className="mt-2 text-lg">{slides[current].subtitle}</p>
-          <div className="flex gap-4 mt-6">
-            <button className="bg-gray-900 text-white px-6 py-3 rounded-2xl">
-              Shop Best Sellers
-            </button>
-            <button
-              onClick={nextSlide}
-              className="bg-white text-gray-900 px-6 py-3 rounded-2xl"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-
-        {/* Slider dots */}
-        <div className="absolute bottom-4 right-6 flex gap-2">
-          {slides.map((_, index) => (
-            <span
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`cursor-pointer ${
-                index === current ? "w-6 h-2 bg-white" : "w-2 h-2 bg-gray-400"
-              } rounded-full transition-all`}
-            ></span>
-          ))}
-        </div>
+      {/* Hero Video Section */}
+      <div className="mx-6 my-4 rounded-3xl relative overflow-hidden bg-black">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls
+          className="w-full h-[330px] object-cover rounded-3xl"
+        >
+          <source
+            src="https://res.cloudinary.com/dszwuz5wz/video/upload/v1769774783/Yosip_--_Naija_Chops_p2iqpi.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       {/* Features */}

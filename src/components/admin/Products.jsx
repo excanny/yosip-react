@@ -17,7 +17,19 @@ const Products = () => {
   const [toast, setToast] = useState(null);
   const [togglingProducts, setTogglingProducts] = useState({});
 
-  const API_BASE_URL = 'https://yosip-api-1.onrender.com';
+  //const API_BASE_URL = 'https://yosip-api-1.onrender.com';
+  const API_BASE_URL = 'http://localhost:4000';
+
+  // Helper function to get proper image URL
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return 'https://via.placeholder.com/40';
+    // If it's already a full URL (starts with http/https), use it directly
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    // Otherwise, it's a relative path, prepend API base URL
+    return `${API_BASE_URL}${imagePath}`;
+  };
 
   // Show toast notification
   const showToast = (message, type = 'success') => {
@@ -438,7 +450,7 @@ const Products = () => {
                         <div className="flex items-center gap-3">
                           {product.images && product.images.length > 0 ? (
                             <img
-                              src={`${API_BASE_URL}${product.images[0]}`}
+                              src={getImageUrl(product.images[0])}
                               alt={product.name}
                               className="w-10 h-10 rounded-lg object-cover"
                               onError={(e) => e.target.src = 'https://via.placeholder.com/40'}
@@ -766,7 +778,7 @@ const Products = () => {
                     {selectedProduct.images.map((image, index) => (
                       <img
                         key={index}
-                        src={`${API_BASE_URL}${image}`}
+                        src={getImageUrl(image)}
                         alt={`Product ${index + 1}`}
                         className="w-full h-20 object-cover rounded-lg"
                       />
