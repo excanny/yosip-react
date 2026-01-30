@@ -143,6 +143,17 @@ export default function Home() {
 
   const API_BASE_URL = "https://yosip-api-1.onrender.com";
 
+  // Helper function to get proper image URL
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "https://via.placeholder.com/400x300?text=No+Image";
+    // If it's already a full URL (starts with http/https), use it directly
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    // Otherwise, it's a relative path, prepend API base URL
+    return `${API_BASE_URL}${imagePath}`;
+  };
+
   // Helper function to make API calls with credentials for cookies
   const fetchWithCredentials = async (url, options = {}) => {
     return fetch(url, {
@@ -181,8 +192,8 @@ export default function Home() {
             tags: [product.category, product.stock > 15 ? "In Stock" : "Limited"],
             rating: 4.5 + Math.random() * 0.5, // Generate random rating between 4.5-5.0
             image: product.images && product.images.length > 0 
-              ? `${API_BASE_URL}${product.images[0]}`
-              : "https://via.placeholder.com/400x300?text=No+Image", // Fallback image
+              ? getImageUrl(product.images[0])
+              : "https://via.placeholder.com/400x300?text=No+Image",
             stock: product.stock,
             category: product.category,
             sku: product.sku
@@ -231,7 +242,7 @@ export default function Home() {
             price: item.productId.price,
             description: item.productId.description,
             image: item.productId.images && item.productId.images.length > 0 
-              ? `${API_BASE_URL}${item.productId.images[0]}`
+              ? getImageUrl(item.productId.images[0])
               : "https://via.placeholder.com/400x300?text=No+Image",
             qty: item.quantity,
             stock: item.productId.stock,
@@ -465,7 +476,7 @@ export default function Home() {
           price: item.productId.price,
           description: item.productId.description,
           image: item.productId.images && item.productId.images.length > 0 
-            ? `${API_BASE_URL}${item.productId.images[0]}`
+            ? getImageUrl(item.productId.images[0])
             : "https://via.placeholder.com/400x300?text=No+Image",
           qty: item.quantity,
           stock: item.productId.stock,
